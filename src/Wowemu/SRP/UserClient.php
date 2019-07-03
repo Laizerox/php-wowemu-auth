@@ -39,16 +39,14 @@ class UserClient extends Client
     /**
      * Generate verifier using username, password and existing salt
      *
-     * @param  string  $I  User's identity (username)
      * @param  string  $p  User's password in plaintext
-     * @param  string  $s  User's salt
      *
      * @return string
      * @throws Exception
      */
-    public function generateVerifier(string $I, string $p, string $s): string
+    public function generateVerifier(string $p): string
     {
-        $privateKey = $this->computePrivateKey($s, $I, $p);
+        $privateKey = $this->computePrivateKey($p);
         $verifier = $this->computeVerifier($privateKey);
 
         return $verifier->toHex();
@@ -58,26 +56,22 @@ class UserClient extends Client
      * Computes private key using salt and identity which is derived from username and password
      *
      * @param  string  $p  User's password in plaintext
-     * @param  string  $I  User's identity (username)
-     * @param  string  $s  User's salt
      *
      * @return BigInteger
      */
-    public function computePrivateKey(string $p, string $I = null, string $s = null): BigInteger
+    public function computePrivateKey(string $p): BigInteger
     {
-        $salt = $s ?? $this->salt;
-        if (empty($salt)) {
+        if (empty($this->salt)) {
             throw new RuntimeException('Received empty salt.');
         }
 
-        $username = $I ?? $this->username;
-        if (empty($username)) {
+        if (empty($this->username)) {
             throw new RuntimeException('Received empty username.');
         }
 
-        $salt = $this->reverseHex($salt);
+        $salt = $this->reverseHex($this->salt);
         $salt = hex2bin($salt);
-        $identity = hash('sha1', strtoupper($username.':'.$p), true);
+        $identity = hash('sha1', strtoupper($this->username.':'.$p), true);
 
         $sha = sha1($salt.$identity);
         $sha = $this->reverseHex($sha);

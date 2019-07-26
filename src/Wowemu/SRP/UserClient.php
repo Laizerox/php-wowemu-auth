@@ -115,7 +115,7 @@ class UserClient extends Client
      */
     public function generateSalt(): string
     {
-        return $this->getRandomNumber(32);
+        return $this->salt = $this->getRandomNumber(32);
     }
 
     /**

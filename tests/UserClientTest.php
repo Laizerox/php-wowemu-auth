@@ -36,11 +36,37 @@ class UserClientTest extends TestCase
     /**
      * @param $username
      * @param $password
+     * @param $expectedSalt
+     * @param $expectedVerifier
+     *
+     * @throws Exception
+     * @dataProvider dataProvider
+     */
+    public function testNewAccountGeneration($username, $password, $expectedSalt, $expectedVerifier): void
+    {
+        // Create a client mock for this test case (equivalent of new UserClient($username)
+        $client = $this->getMockBuilder(UserClient::class)
+            ->setConstructorArgs([$username])
+            ->setMethods(['getRandomNumber'])
+            ->getMock();
+
+        $client->method('getRandomNumber')->willReturn($expectedSalt);
+
+        $salt = $client->generateSalt();
+        $verifier = $client->generateVerifier($password);
+
+        $this->assertEquals($expectedSalt, $salt);
+        $this->assertEquals($expectedVerifier, $verifier);
+    }
+
+    /**
+     * @param $username
+     * @param $password
      * @param $salt
      * @param $expectedVerifier
      *
-     * @dataProvider dataProvider
      * @throws Exception
+     * @dataProvider dataProvider
      */
     public function testGenerateVerifierAgainstExistingData($username, $password, $salt, $expectedVerifier): void
     {

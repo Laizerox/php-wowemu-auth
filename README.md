@@ -29,8 +29,8 @@ Next you'll need to create the verifier and salt values using the username and p
 
 ``` php
 $client = new UserClient($username);
-$verifier = $client->generateVerifier($password);
 $salt = $client->generateSalt();
+$verifier = $client->generateVerifier($password);
 ```
 
 Once that is generated you'll just insert those values into the database to the `v` and `s` fields.

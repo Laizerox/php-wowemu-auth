@@ -89,8 +89,8 @@ if (isset($_POST['register'])) {
     
     /* Create your v and s values. */
     $client = new UserClient($username);
-    $verifier = $client->generateVerifier($password);
     $salt = $client->generateSalt();
+    $verifier = $client->generateVerifier($password);
 
     /* Insert the data into the CMaNGOS database. */
     mysqli_query($db, "INSERT INTO account (username, v, s, gmlevel, email, joindate, last_ip, expansion) VALUES ('$username', '$verifier', '$salt',  '$gmLevel', '$email', '$joinDate', '$ip', '$expansion')");

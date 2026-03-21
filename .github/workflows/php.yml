@@ -12,26 +12,26 @@ jobs:
     strategy:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macOS-latest]
-        php-versions: ['7.1', '7.2', '7.3', '7.4']
+        php-versions: ['8.2', '8.3', '8.4', '8.5']
     name: Test with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-      
+
     - name: Install PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
-        
+
     - name: Check PHP Version
       run: php -v
-      
+
     - name: Validate composer.json
       run: composer validate
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
-  
+
     - name: Run test suite
       run: composer run-script test
-    
+

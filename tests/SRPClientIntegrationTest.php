@@ -11,11 +11,12 @@ namespace Tests;
 use Exception;
 use Laizerox\Wowemu\SRP\HostClient;
 use Laizerox\Wowemu\SRP\UserClient;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class SRPClientIntegrationTest extends TestCase
 {
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             [
@@ -49,9 +50,9 @@ class SRPClientIntegrationTest extends TestCase
      * @param  array  $client
      * @param  array  $host
      *
-     * @dataProvider dataProvider
      * @throws Exception
      */
+    #[DataProvider('dataProvider')]
     public function testClientHostIntegration(array $client, array $host): void
     {
         $srpUserClient = new UserClient($client['username']);

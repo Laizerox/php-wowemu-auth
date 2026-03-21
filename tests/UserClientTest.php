@@ -10,12 +10,14 @@ namespace Tests;
 
 use Exception;
 use Laizerox\Wowemu\SRP\UserClient;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 class UserClientTest extends TestCase
 {
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             [
@@ -40,14 +42,15 @@ class UserClientTest extends TestCase
      * @param $expectedVerifier
      *
      * @throws Exception
-     * @dataProvider dataProvider
      */
+    #[AllowMockObjectsWithoutExpectations]
+    #[DataProvider('dataProvider')]
     public function testNewAccountGeneration($username, $password, $expectedSalt, $expectedVerifier): void
     {
         // Create a client mock for this test case (equivalent of new UserClient($username)
         $client = $this->getMockBuilder(UserClient::class)
             ->setConstructorArgs([$username])
-            ->setMethods(['getRandomNumber'])
+            ->onlyMethods(['getRandomNumber'])
             ->getMock();
 
         $client->method('getRandomNumber')->willReturn($expectedSalt);
@@ -66,8 +69,8 @@ class UserClientTest extends TestCase
      * @param $expectedVerifier
      *
      * @throws Exception
-     * @dataProvider dataProvider
      */
+    #[DataProvider('dataProvider')]
     public function testGenerateVerifierAgainstExistingData($username, $password, $salt, $expectedVerifier): void
     {
         $client = new UserClient($username, $salt);

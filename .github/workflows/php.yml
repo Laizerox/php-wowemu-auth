@@ -29,8 +29,8 @@ jobs:
     - name: Validate composer.json
       run: composer validate
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress --no-suggest
+    - name: Resolve dependencies for this PHP version
+      run: composer update --prefer-dist --no-progress --no-interaction
 
     - name: Run test suite
       run: composer run-script test

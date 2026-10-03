@@ -3,6 +3,8 @@
 ## Requirements
 
 * PHP 8.2 - 8.5
+* PHP `bcmath` extension
+* phpseclib 3.0.57 or newer in the 3.x series (installed by Composer)
 * Web server (ex. Apache or Nginx)
 * CMaNGOS instance
 
@@ -13,6 +15,15 @@ You can install the libary via composer:
 ``` bash
 composer require laizerox/php-wowemu-auth
 ```
+
+### Migrating from phpseclib 2
+
+This library now requires phpseclib `^3.0.57` to exclude versions flagged by
+[GHSA-q97c-8qh3-fpc6](https://github.com/advisories/GHSA-q97c-8qh3-fpc6).
+Methods that accept or return big integers now use `phpseclib3\Math\BigInteger`
+instead of `phpseclib\Math\BigInteger`. Update imports and type declarations in
+callers or subclasses that use those methods. The `Laizerox\Wowemu\SRP` class
+names, salt/verifier strings, and SRP calculations remain the same.
 
 ## Usage
 

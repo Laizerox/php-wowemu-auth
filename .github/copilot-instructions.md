@@ -23,7 +23,7 @@
 
 - PHP 8+ is required by `composer.json`.
 - The `ext-bcmath` extension is required.
-- Cryptographic big integer operations are implemented through `phpseclib/phpseclib` v2.
+- Cryptographic big integer operations are implemented through `phpseclib/phpseclib` `^3.0.57`, using `phpseclib3\Math\BigInteger`.
 - In interactive `zsh`, `composer test` may trigger shell autocorrect (`test` -> `tests`). Use `composer run-script test` to avoid that prompt.
 
 ## Code Map
